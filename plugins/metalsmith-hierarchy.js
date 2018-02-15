@@ -49,7 +49,8 @@ function walk(opts, file, files, array, children, level) {
     // Add excerpt
     if(opts.excerpt && !child.excerpt) {
       let contents = decoder.write(fileObj.contents);
-      let html = (ext == '.md') ? md.render(contents) : contents;
+      // Support both foo.md and foo.md.mustache
+      let html = (basename.indexOf('.md') == -1) ? contents : md.render(contents);
       let $ = cheerio.load(html);
       let elem = $('p').first();
       child.excerpt = elem.text();
